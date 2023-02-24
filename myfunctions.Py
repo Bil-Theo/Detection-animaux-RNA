@@ -30,14 +30,14 @@ def udpate(Lw, Lb, W, b, rate_learning):
     b = b - rate_learning*Lb
     return (W,b)
 
-def artificial_neuron(X, Y, x, y, nbr_iteration = 10000, rate_learning = 0.01):
+def artificial_neuron(X, Y, x, y, nbr_iteration = 1000, rate_learning = 0.01):
     
     W, b = initialisation(X)
     Lg_train = []
     acc_train = []
     Lg_test = []
     acc_test = []
-    rate = 0
+    Rate = 0
     for i in tqdm(range(nbr_iteration)):
         A = model(X, W, b)
         os.system('cls')
@@ -67,7 +67,7 @@ def artificial_neuron(X, Y, x, y, nbr_iteration = 10000, rate_learning = 0.01):
     plt.plot(Lg_test, label = 'Test Loss')
     plt.subplot(1,2,2)
     plt.legend()
-    plt.plot(acc_train, 'Train Acc')
+    plt.plot(acc_train, label = 'Train Acc')
     plt.plot(acc_test, label = 'Test Acc')
     plt.legend()
     plt.show()
@@ -80,13 +80,7 @@ def prediction(X, W, b):
 
 def save_model(W, b):
     
-    S = ""
- 
-    for i in range(0, len(W)):
-        S = S + repr(W[i][0])
-        S = S +"\t"
-
-    data_model = {'inclu': S, 'biais': repr(b[0])}
+    data_model = {'coef_neuron': W, 'biais': b}
 
     with open('./datasets/deep_model.data', 'wb') as file:
         myPickler  = pickle.Pickler(file)
