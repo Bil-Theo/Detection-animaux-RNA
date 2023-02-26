@@ -106,5 +106,5 @@ def save_model(params):
 
     with open('./datasets/deep_model.data', 'wb') as file:
         myPickler  = pickle.Pickler(params)
-        myPickler.dump(data_model)
+        myPickler.dump(params)
         file.close()
