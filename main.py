@@ -1,19 +1,20 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.datasets import make_blobs 
+from sklearn.datasets import make_circles 
 import myfunctions as fun
-import utilitaire as utl
+from utilitaire import load_data
 
-X_train, Y_train, X_test, Y_test  = utl.load_data()
+X, y = make_circles(n_samples=100, noise=0.1, factor=0.3, random_state=0)
+X = X.T
+y = y.reshape(1, y.shape[0])
 
-X_trainRe = X_train.reshape(X_train.shape[0], -1) / X_train.max() #Normaliser X =  (X - min)/(max - min)
-X_testRe = X_test.reshape(X_test.shape[0], -1) / X_train.max() #Normaliser X =  (X - min)/(max - min)
+print("Dimension X: ",X.shape)
 
-print("Dimension X: ",X_trainRe.shape)
+print("\nDimension y: ",y.shape)
 
-print("\nDimension y: ",Y_train.shape)
+plt.scatter(X[0, :], X[1, :], c=y, cmap='summer')
+plt.show()
 
-
-W, b = fun.artificial_neuron(X_trainRe, Y_train, X_testRe, Y_test)
-fun.save_model(W, b)
+params = fun.neural_network(X, y, n1=2)
+#fun.save_model(params)
 
