@@ -1,20 +1,23 @@
 import numpy as np
 import matplotlib.pyplot as plt
-from sklearn.datasets import make_circles 
-import myfunctions as fun
+from myfunctions import *
 from utilitaire import load_data
 
 X_train, Y_train, X_test, Y_test = load_data()
-X = X.T
-y = y.reshape(1, y.shape[0])
+print(X_train.shape)
+print(Y_train.shape)
+print(X_test.shape)
+print(Y_test.shape)
+#show_image(X_train)
 
-print("Dimension X: ",X.shape)
-
-print("\nDimension y: ",y.shape)
-
-plt.scatter(X[0, :], X[1, :], c=y, cmap='summer')
+X_train, Y_train, X_test, Y_test = redimension(X_train, Y_train, X_test, Y_test)
+print(X_train.shape)
+print(Y_train.shape)
+print(X_test.shape)
+print(Y_test.shape)
+plt.scatter(X_train[0, :], X_train[1, :])
 plt.show()
 
-params = fun.neural_network(X, y, n1=2)
+params = neural_network(X_train, Y_train, X_test, Y_test, n1=16)
 #fun.save_model(params)
 

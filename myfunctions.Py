@@ -64,25 +64,37 @@ def udpate(gradient, params, rate_learning):
     }
     return params
 
-def neural_network(X, Y, n1=2, nbr_iteration = 1000, rate_learning = 0.1):
+def neural_network(X, Y, x, y, n1, nbr_iteration = 1000, rate_learning = 0.01):
     n0 = X.shape[0]
     n2 = X.shape[1]
     params = initialisation(n0, n1, n2)
 
     Lg_train = []
     acc_train = []
+    Lg_test = []
+    acc_test = []
     Rate = 0
     for i in tqdm(range(nbr_iteration)):
         A = forward_propagation(X, params)      
-        gradient = back_propagation(A, X, Y, params)  
-        params = udpate(gradient, params, rate_learning)
         if i % 10 ==0:
             #for train
             Lg_train.append(cost_function(A['A2'], Y))
             y_pred = prediction(X, params)
-            y = Y.flatten()
-            Rate = accuracy_score(y, y_pred.flatten()[:y.shape[0]])
+            ym = Y.flatten()
+            Rate = accuracy_score(ym, y_pred.flatten()[:ym.shape[0]])
             acc_train.append(Rate)
+
+
+            A_t = forward_propagation(x, params)
+            #for train
+            Lg_test.append(cost_function(A_t['A2'], y))
+            y_pred = prediction(x, params)
+            ym = y.flatten()
+            rate = accuracy_score(ym, y_pred.flatten()[:ym.shape[0]])
+            acc_test.append(rate)
+        
+        gradient = back_propagation(A, X, Y, params)  
+        params = udpate(gradient, params, rate_learning)
 
 
         
@@ -90,13 +102,14 @@ def neural_network(X, Y, n1=2, nbr_iteration = 1000, rate_learning = 0.1):
     plt.figure(figsize=(12,4))
     plt.subplot(1,2,1)
     plt.plot(Lg_train, label = 'Train Loss')
+    plt.plot(Lg_test, label = 'Test Loss')
     plt.legend()
     plt.subplot(1,2,2)
     plt.plot(acc_train, label = 'Train Acc')
+    plt.plot(acc_test, label = 'Test Acc')
     plt.legend()
     plt.show()
     return params
-
 
 def prediction(X, params):
     A = forward_propagation(X, params)
@@ -111,8 +124,28 @@ def save_model(params):
 
 def show_image(x):
     plt.figure(figsize=(18,8))
-    for i in range(1, 10):
+    for i in range(1, 15):
         plt.subplot(4, 5, i)
-        plt.show_image(x[i], cmp='gray')
+        plt.imshow(x[i], cmap='gray')
         plt.tight_layout()
     plt.show()
+
+
+def redimension(X_train, Y_train, X_test, Y_test):
+    Y_train = Y_train.T
+    Y_test = Y_test.T
+    X_train =  X_train.T
+    X_test = X_test.T
+
+    X_train = X_train.reshape(-1, X_train.shape[-1])/X_train.max()
+    X_test = X_test.reshape(-1, X_test.shape[-1])/X_test.max()
+
+    m_train = 300
+    m_test = 80
+
+    X_train = X_train[:, :m_train]
+    X_test = X_test[:, :m_test]
+    Y_train = Y_train[:, :m_train]
+    Y_test = Y_test[:, :m_test]
+
+    return  X_train, Y_train, X_test, Y_test
