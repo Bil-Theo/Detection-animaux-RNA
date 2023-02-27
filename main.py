@@ -19,5 +19,5 @@ plt.scatter(X_train[0, :], X_train[1, :])
 plt.show()
 
 params = neural_network(X_train, Y_train, X_test, Y_test, n1=16)
-#fun.save_model(params)
+fun.save_model(params)
 
