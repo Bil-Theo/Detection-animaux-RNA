@@ -4,7 +4,7 @@ from sklearn.datasets import make_circles
 import myfunctions as fun
 from utilitaire import load_data
 
-X, y = make_circles(n_samples=100, noise=0.1, factor=0.3, random_state=0)
+X_train, Y_train, X_test, Y_test = load_data()
 X = X.T
 y = y.reshape(1, y.shape[0])
 

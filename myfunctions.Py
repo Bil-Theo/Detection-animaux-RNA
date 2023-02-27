@@ -105,6 +105,14 @@ def prediction(X, params):
 def save_model(params):
 
     with open('./datasets/deep_model.data', 'wb') as file:
-        myPickler  = pickle.Pickler(params)
+        myPickler  = pickle.Pickler(file)
         myPickler.dump(params)
         file.close()
+
+def show_image(x):
+    plt.figure(figsize=(18,8))
+    for i in range(1, 10):
+        plt.subplot(4, 5, i)
+        plt.show_image(x[i], cmp='gray')
+        plt.tight_layout()
+    plt.show()
